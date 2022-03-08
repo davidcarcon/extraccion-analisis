@@ -10,7 +10,7 @@ import datetime
 import nltk
 from emotion import saca_score
 from googletrans import Translator
-#nltk.download('punkt')
+nltk.download('punkt')
 
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
