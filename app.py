@@ -125,6 +125,14 @@ def button_submmit_callback():
     		df['optimismo'] = lista_emociones[2]
     		df['tristeza'] = lista_emociones[3]
     		st.table(df.sample(10))
+    		tuitsdf = ' '.join(df['Texto'].to_list())
+    		salidadf = para_nube(tuitsdf, stopwords)
+    		st.header('Nube de palabras de todos los tuits extraidos :cloud:')
+    		wordclouddf = WordCloud().generate(salidadf)
+    		plt.imshow(wordclouddf, interpolation='bilinear')
+    		plt.axis("off")
+    		plt.show()
+    		st.pyplot()
     		st.header('Usuarios con mayor numero de followers')
     		dfu = dfu.drop_duplicates().sort_values(by='Numero Followers', ascending=False).head(5)
     		fig = px.bar(x=dfu['Numero Followers'], y=dfu['Usuario Twitter'],  
@@ -196,12 +204,12 @@ def button_submmit_callback():
     		st.header('Información de los Usuarios :adult:')
     		st.table(usuarios)
     		st.header('Muestra de los ultmos tuits de los usuarios :astonished:')
-    		st.table(textos.sample(10))
     		lista_emociones_u = aplica_func(textos.Texto.to_list())
     		textos['enojo'] = lista_emociones_u[0]
     		textos['alegría'] = lista_emociones_u[1]
     		textos['optimismo'] = lista_emociones_u[2]
     		textos['tristeza'] = lista_emociones_u[3]
+    		st.table(textos.sample(10))
     		tuitst = ' '.join(textos['Texto'].to_list())
     		salida = para_nube(tuitst, stopwords)
     		st.header('Nube de palabras de todos los tuits extraidos :cloud:')
@@ -237,6 +245,7 @@ def oauth_login():
 	consumer_secret = st.secrets['consumer_secret']
 	access_token = st.secrets['access_token']
 	access_token_secret = st.secrets['access_token_secret']	
+
 	auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 	auth.set_access_token(access_token, access_token_secret)
 	api = tweepy.API(auth)
